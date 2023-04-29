@@ -1,6 +1,7 @@
 import math
 import pprint
 
+#DATA
 nodes = [
     'Entrance',
     'Ticket Counter',
@@ -37,10 +38,9 @@ nodes = [
     'Finding Jesse',
     'Tilted Towers',
 ]
-
 rides_data = {
-    'Entrance':{"visited": False, "ride_type": ["Utilities"], "neighbours": [("Ticket Counter", 80)]},
-    'Ticket Counter':{"visited": False, "ride_type": ["Utilities"], "neighbours": [("Bathroom 4", 20), ("The Fall", 50), ("Fight Club", 40), ("Cylon", 100), ("Astroworld", 50)]},
+    'Entrance':{"visited": False, "ride_type": [""], "neighbours": [("Ticket Counter", 80)]},
+    'Ticket Counter':{"visited": False, "ride_type": [""], "neighbours": [("Bathroom 4", 20), ("The Fall", 50), ("Fight Club", 40), ("Cylon", 100), ("Astroworld", 50)]},
     'XOChella':{"visited": False, "ride_type": ["Water", "Adventure"], "neighbours": [("Arcade", 30), ("Food Court", 40), ("The Heart River", 30), ("Secure The Bag", 20), ("Bathroom 2", 10), ("Krusty Krabs", 30), ("Tilted Towers", 20)]},
     'Vuzuvela':{"visited": False, "ride_type": ["Thrill", "Water"], "neighbours": [("The Fall", 40), ("Heaven's Bridge Entrance 1", 40)]},
     'Blinding Lights':{"visited": False, "ride_type": ["Thrill"], "neighbours": [("Cylon", 50), ("The Mom", 90), ("Shrek", 10)]},
@@ -74,15 +74,13 @@ rides_data = {
     'Finding Jesse':{"visited": False, "ride_type": ["Kids", "Adventure"], "neighbours": []},
     'Tilted Towers':{"visited": False, "ride_type": ["Thrill", "Adventure"], "neighbours": []},
 }
-
 rideTypes= ["Utilities", "Kids", "Thrill", "Adventure", "Water", "Horror"]
 
-
+#MAKING THE GRAPH
 def addnodes(G,nodes):
     for i in nodes:
         G[i]=[]
     return G
-
 def my_graph(G,rides):
     for key,value in rides.items():
         for connection in value["neighbours"]: 
@@ -90,14 +88,15 @@ def my_graph(G,rides):
             G[connection[0]].append((key,connection[1]))
     return G
 
+#HELPER FUNCTIONS
 def show_unvisited(visited,nodes):
     lst=[]
     for i in nodes:
         if i not in visited and rides_data[i]["ride_type"] != ["Utilities"]:
-            lst.append(i)
+            if rides_data[i]["ride_type"] != [""]:
+                lst.append(i)
             
     return lst
-    
 
 def dijkstra_for_desired(graph,start,end):
     table,visited={},[]
@@ -134,21 +133,111 @@ def dijkstra_for_desired(graph,start,end):
     # print(table)
 
     # backtracking
-    mynode,ans=end,[]
+    mynode,path=end,[]
     
     while mynode!=start:
-        ans.append((table[mynode][0],mynode))
+        path.append((table[mynode][0],mynode))
         mynode = table[mynode][0]
+    ans = ""
+    for i in path[::-1]:
+        if i == path[0]:
+            ans += i[0]+" -> "+i[1]
+        else:
+            ans += i[0]+" -> "
+        
+    return(ans, table[end][1])
 
-    return(ans[::-1])
 
+
+
+
+
+def enqueue(queue,char):
+    queue.append(char)
+def dequeue(queue):
+    return queue.pop(0)
+def isempty(queue):
+    return len(queue) == 0
+
+def option3(Graph, visited, prefer, current):
+    preferred_rides = []
+    outputlst = show_unvisited(visited,nodes)
+    for ride in outputlst:
+        if prefer in rides_data[ride]["ride_type"]:
+            preferred_rides.append(ride)
+    if len(preferred_rides) == 0:
+        print("All preferred rides visited.")
+    else:
+        (min_path, min_cost) = [], 100000
+        for ride in preferred_rides:
+            path, cost = dijkstra_for_desired(Graph,current,ride)
+            if cost < min_cost:
+                min_path, min_cost = [(ride, path)], cost
+            elif cost == min_cost:
+                min_path.append((ride, path))
+        if len(min_path) == 1:
+            print()
+            print("Path:", min_path[0][1])
+            return min_path[0][0]
+        else:
+            print("Multiple nearest preferred rides found:")
+            rides = []
+            for ride in min_path:
+                rides.append(ride[0])
+                if ride == min_path[-1]:
+                    print(ride[0])
+                else:
+                    print(ride[0], end=", ")
+            while True:
+                chosen = input("Choose any one of the following nearest preferred rides: ")
+                if chosen in rides:
+                    break
+                print("Invalid ride. Try again.")
+            for ride in min_path:
+                if ride[0] == chosen:
+                    print()
+                    print("Path:", ride[1])
+                    return ride[0]
+
+def option2(Graph, visited, current):
+    outputlst = show_unvisited(visited,nodes)
+    (min_path, min_cost) = [], 100000
+    if len(outputlst) == 0:
+        return
+    for ride in outputlst:
+        path, cost = dijkstra_for_desired(Graph,current,ride)
+        if cost < min_cost:
+            min_path, min_cost = [(ride, path)], cost
+        elif cost == min_cost:
+            min_path.append((ride, path))
+    if len(min_path) == 1:
+        print("Path:", min_path[0][1])
+        return min_path[0][0]
+    else:
+        print("Multiple nearest rides found:")
+        rides = []
+        for ride in min_path:
+            rides.append(ride[0])
+            if ride == min_path[-1]:
+                print(ride[0])
+            else:
+                print(ride[0], end=", ")
+        while True:
+            chosen = input("Choose any one of the following nearest rides: ")
+            if chosen in rides:
+                break
+            print("Invalid ride. Try again.")
+        for ride in min_path:
+            if ride[0] == chosen:
+                print("Path:", ride[1])
+                return ride[0]
 
 def main():
     Graph={}
     Graph = addnodes(Graph,nodes)
     Graph= my_graph(Graph,rides_data)
-    pp = pprint.PrettyPrinter(indent=1)
-    pp.pprint(Graph)
+    # pp = pprint.PrettyPrinter(indent=1)
+    # pp.pprint(Graph)
     # print(Graph)
 
     print("Welcome To Habib University Theme Park")
@@ -157,7 +246,28 @@ def main():
 
     starting = int(input("Select: "))
     if starting == 1:
-        current = "Gate"
+        visited=[]
+        current = "Entrance"
+        queue = [current]
+    
+        while not isempty(queue):
+            node = dequeue(queue)
+            if node not in visited:
+                current = node
+                print("New location: ",current)
+                visited.append(node)
+                print("visited",visited)
+                print("1 to continue")
+                print("2 for exit")
+                cont = int(input("Choose: " ))
+                if cont == 2:
+                    break
+                for neighbour in Graph[node]:
+                    if neighbour[0] not in visited and rides_data[neighbour[0]]["ride_type"] != ["Utilities"]:
+                        enqueue(queue,neighbour[0])
+
+            print()
+
     else:
         visited = []
         current = input("Current location: ")
@@ -167,6 +277,7 @@ def main():
             visited.append(current)
             print("visited",visited)
             # Show Options
+
             print("1 to see all unvisited rides")
             print("2 to see nearest unvisited ride")
             print("3 to see nearest preferred unvisited ride")
@@ -179,13 +290,38 @@ def main():
                 while True:
                     chosen = input("Choose Ride: ")
                     if chosen in outputlst:
-                        path = dijkstra_for_desired(Graph,current,chosen)
-                        print(path)
+                        path = dijkstra_for_desired(Graph,current,chosen)[0]
+                        print()
+                        print("Path:",path)
                         current = chosen
                         break
                     else:
                         print("Invalid Input")
-                        
-            print()
+            elif option==2:
+                    check = option2(Graph, visited, current)
+                    if check != None:
+                        current = check  
+                    else:
+                        print("All rides visited.")
+
+            elif option==3:
+                while True:
+                    print("Ride Types:")
+                    for type in rideTypes:
+                        if type == rideTypes[-1]:
+                            print(type)
+                        else:
+                            print(type, end=", ")
+                    prefer = input("Choose Preferred Ride Type: ")
+                    if prefer in rideTypes:
+                        check = option3(Graph, visited, prefer, current)
+                        if check != None:
+                            current = check
+                        break
+                    print("Invalid ride type. Try again.")
+
+            print()             
+                
+
 
 main()
