@@ -235,7 +235,7 @@ def option2(Graph, visited, current):
 def main():
     Graph={}
     Graph = addnodes(Graph,nodes)
-    Graph= my_graph(Graph,rides_data)
+    Graph= my_graph(Graph,rides_data) 
     # pp = pprint.PrettyPrinter(indent=1)
     # pp.pprint(Graph)
     # print(Graph)
