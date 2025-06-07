@@ -123,59 +123,57 @@ def show_unvisited(visited,nodes):
             
     return lst
 
-def dijkstra_for_desired(graph,start,end):
-    table,visited={},[]
-    table[start]=[start,0]
+def dijkstra_for_desired(graph, start, end):
+    # Initialize tables
+    table = {node: ["", math.inf] for node in graph}
+    table[start] = [start, 0]
+    visited = set()
 
-    #Table with all values infinite except starting node
-    for key in graph:
-        if key!=start:
-            table[key] = ["",math.inf]    
+    # Keep track of all nodes we've seen
+    pq = [(0, start)]  # priority queue of (distance, node)
+    seen = {start}
 
-    # print(table)
-
-    #Code begin
-    while len(visited) < len(graph):
-
-        #choose minimum value node in table to know which node to continue with
-        minval,node=math.inf,""
-        for key,val in table.items():
-            if key not in visited and val[1] < minval:
-                minval=val[1]
-                node=key
-
-        #go into the neighbours of minimum value node in table
-        for neighbour in graph[node]: 
-            cost,thenode = neighbour[1]+minval,neighbour[0]
-            #check if the value should be updated in table, then update    
-            if thenode not in visited and cost < table[thenode][1]:
-                table[thenode][0],table[thenode][1] =node, cost
-    
-
-        visited.append(node)
-
-    # print(visited)
-    # print(table)
-
-    # backtracking
-    mynode,path=end,[]
-    
-    while mynode!=start:
-        path.append((table[mynode][0],mynode))
-        mynode = table[mynode][0]
-    ans = ""
-    for i in path[::-1]:
-        if i == path[0]:
-            ans += i[0]+" -> "+i[1]
-        else:
-            ans += i[0]+" -> "
+    while pq:
+        # Get node with minimum distance
+        current_dist, current = min(pq)
+        pq.remove((current_dist, current))
         
-    return(ans, table[end][1])
+        # If we reached the destination, we're done
+        if current == end:
+            break
+            
+        # If we've already processed this node, skip it
+        if current in visited:
+            continue
+            
+        visited.add(current)
+        
+        # Check all neighbors
+        for neighbor, weight in graph[current]:
+            if neighbor not in visited:
+                distance = current_dist + float(weight)
+                
+                # If we found a better path, update it
+                if distance < table[neighbor][1]:
+                    table[neighbor] = [current, distance]
+                    pq.append((distance, neighbor))
+                    seen.add(neighbor)
+    
+    # If we couldn't reach the end node
+    if table[end][0] == "":
+        raise ValueError(f"No path exists from {start} to {end}")
 
-
-
-
-
+    # Build the path by backtracking
+    path = []
+    current = end
+    while current != start:
+        prev = table[current][0]
+        path.append(current)
+        current = prev
+    path.append(start)
+    
+    # Return path in correct order with distance
+    return " -> ".join(reversed(path)), table[end][1]
 
 def enqueue(queue,char):
     queue.append(char)
