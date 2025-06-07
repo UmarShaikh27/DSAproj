@@ -117,17 +117,21 @@ class ThemeParkGUI:
         
         # Color nodes based on type
         utility_nodes = [node for node in self.nx_graph.nodes() if rides_data[node]["ride_type"] == ["Utilities"]]
-        ride_nodes = [node for node in self.nx_graph.nodes() if node not in utility_nodes and node != self.current_location and node not in self.visited]
+        ride_nodes = [node for node in self.nx_graph.nodes() if node not in utility_nodes 
+                     and node != self.current_location 
+                     and node not in self.visited]
+        visited_nodes = [node for node in self.visited if node != self.current_location]
         
-        # Draw different types of nodes
+        # Draw nodes in correct order: utilities, unvisited, visited, and current location last
         nx.draw_networkx_nodes(self.nx_graph, pos, nodelist=utility_nodes, 
                              node_color='lightgray', node_size=300, alpha=0.7)
         nx.draw_networkx_nodes(self.nx_graph, pos, nodelist=ride_nodes,
                              node_color='lightblue', node_size=500)
+        nx.draw_networkx_nodes(self.nx_graph, pos, nodelist=visited_nodes,
+                             node_color='gray', node_size=500)
+        # Draw current location last so it's always on top
         nx.draw_networkx_nodes(self.nx_graph, pos, nodelist=[self.current_location],
                              node_color='green', node_size=700)
-        nx.draw_networkx_nodes(self.nx_graph, pos, nodelist=self.visited,
-                             node_color='gray', node_size=500)
         
         # Draw labels with better formatting
         nx.draw_networkx_labels(self.nx_graph, pos, font_size=8,
