@@ -1,13 +1,21 @@
 # Theme Park Navigation System
 
 ## Project Overview
-This project implements a theme park navigation system that helps visitors explore and navigate through the Habib University Theme Park. The system uses Dijkstra's algorithm to find the shortest paths between attractions and provides various features to enhance the visitor experience.
+This project implements a theme park navigation system that helps visitors explore and navigate through the Habib University Theme Park. The system uses Dijkstra's algorithm to find the shortest paths between attractions and provides various features to enhance the visitor experience. The project includes both a command-line interface and a graphical user interface for better user interaction.
 
 ## Features
 
-### 1. Tour Options
-- **Complete Tour**: Start from the entrance and visit all attractions systematically
-- **Custom Start**: Begin the tour from any location in the park
+### 1. Graphical User Interface
+- Interactive map visualization showing all rides and paths
+- Color-coded nodes for different states:
+  - Green: Current location
+  - Blue: Unvisited rides
+  - Gray: Visited rides
+  - Light Gray: Utilities (bathrooms, food court)
+- Distance labels showing actual distances between rides in meters
+- Left panel for controls and ride selection
+- List of visited rides
+- Reset functionality
 
 ### 2. Navigation Features
 - View all unvisited rides
@@ -24,6 +32,7 @@ This project implements a theme park navigation system that helps visitors explo
 - Shows optimal paths between attractions using Dijkstra's algorithm
 - Displays distance information
 - Handles multiple equidistant options
+- Visual feedback for current location and visited rides
 
 ## Ride Types
 The park features various types of attractions:
@@ -40,6 +49,7 @@ The park features various types of attractions:
 - Graph representation using adjacency lists
 - Queue implementation for BFS traversal
 - Dictionary-based data storage
+- NetworkX graph for visualization
 
 ### Algorithms
 - **Dijkstra's Algorithm**: Used for finding shortest paths between attractions
@@ -52,7 +62,21 @@ The park features various types of attractions:
 
 ## How to Use
 
-1. Run the program:
+### Graphical Interface
+1. Run the GUI program:
+```python
+python gui.py
+```
+
+2. Use the interface:
+   - View the map on the right panel
+   - Use navigation buttons on the left panel
+   - Select ride types from the dropdown
+   - Track visited rides in the list
+   - Reset tour when needed
+
+### Command Line Interface
+1. Run the command-line program:
 ```python
 python projfile.py
 ```
@@ -61,41 +85,22 @@ python projfile.py
    - Enter 1 for Complete Tour (starts from entrance)
    - Enter 2 to start from a custom location
 
-3. If you chose Complete Tour:
-   - Follow the guided tour
-   - Choose to continue (1) or exit (2) at each stop
-
-4. If you chose Custom Start:
-   - Enter your current location
-   - Choose from available options:
-     1. View all unvisited rides
-     2. Find nearest unvisited ride
-     3. Find nearest preferred ride type
-
-5. For preferred rides:
-   - Select a ride type
-   - Choose from available rides of that type
-   - Follow the suggested path
+3. Follow the text-based prompts to navigate through the park
 
 ## Project Structure
-- `projfile.py`: Main project file containing all functionality
+- `gui.py`: Graphical user interface implementation
+- `projfile.py`: Core functionality and command-line interface
 - Data structures:
   - `nodes`: List of all locations
   - `rides_data`: Dictionary containing ride information
   - `Graph`: Adjacency list representation of the park layout
 
-## Error Handling
-- Invalid input handling for all user inputs
-- Path validation
-- Location verification
-- Ride type validation
-
 ## Dependencies
 - Python 3.x
-- Standard libraries:
+- Required libraries:
+  - `tkinter`: For GUI components
+  - `matplotlib`: For visualization
+  - `networkx`: For graph visualization
   - `math`: For infinity values in Dijkstra's algorithm
 
-## Authors
-- Umar Shaikh
-- Habib University
-- Data Structures and Algorithms Project
+
