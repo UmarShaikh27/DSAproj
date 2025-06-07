@@ -22,22 +22,22 @@ locationsData = {
     'Car-O-Sail':{"visited": False, "locationType": ["Kids"], "neighbours": [("Astroworld", 50), ("Krusty Krabs", 50), ("Bathroom 1", 10), ("Fight Club", 30)]},
     'Calling For Duty':{"visited": False, "locationType": ["Adventure"], "neighbours": [("The Palms", 40)]},
     'Shrek':{"visited": False, "locationType": ["Kids"], "neighbours": []},
-    'Secure The Bag':{"visited": False, "locationType": ["Adventure", "Horror"], "neighbours": []},
-    'Bathroom 1':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
-    'Bathroom 2':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
-    'Bathroom 3':{"visited": False, "locationType": ["Bathroom"], "neighbours": [("Babatunde", 10)]},
-    'Bathroom 4':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
-    'Bathroom 5':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
-    'The Palms':{"visited": False, "locationType": ["Utilities"], "neighbours": []},
-    'Fight Club':{"visited": False, "locationType": ["Adventure"], "neighbours": []},
-    'Krusty Krabs':{"visited": False, "locationType": ["Utilities"], "neighbours": [("Heaven's Bridge Entrance 2", 10)]},
-    "Heaven's Bridge Entrance 2":{"visited": False, "locationType": ["Adventure"], "neighbours": [("Heaven's Bridge Entrance 1", 70)]},
-    'Astroworld':{"visited": False, "locationType": ["Adventure", "Horror"], "neighbours": [("Babatunde", 10)]},
-    'Babatunde':{"visited": False, "locationType": ["Horror"], "neighbours": [("Heaven's Bridge Entrance 1", 10)]},
-    "Heaven's Bridge Entrance 1":{"visited": False, "locationType": ["Adventure"], "neighbours": [("The After Hours", 20)]},
-    'The After Hours':{"visited": False, "locationType": ["Thrill", "Horror"], "neighbours": []},
-    'Finding Jesse':{"visited": False, "locationType": ["Kids", "Adventure"], "neighbours": []},
-    'Tilted Towers':{"visited": False, "locationType": ["Thrill", "Adventure"], "neighbours": []},
+    # 'Secure The Bag':{"visited": False, "locationType": ["Adventure", "Horror"], "neighbours": []},
+    # 'Bathroom 1':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
+    # 'Bathroom 2':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
+    # 'Bathroom 3':{"visited": False, "locationType": ["Bathroom"], "neighbours": [("Babatunde", 10)]},
+    # 'Bathroom 4':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
+    # 'Bathroom 5':{"visited": False, "locationType": ["Bathroom"], "neighbours": []},
+    # 'The Palms':{"visited": False, "locationType": ["Utilities"], "neighbours": []},
+    # 'Fight Club':{"visited": False, "locationType": ["Adventure"], "neighbours": []},
+    # 'Krusty Krabs':{"visited": False, "locationType": ["Utilities"], "neighbours": [("Heaven's Bridge Entrance 2", 10)]},
+    # "Heaven's Bridge Entrance 2":{"visited": False, "locationType": ["Adventure"], "neighbours": [("Heaven's Bridge Entrance 1", 70)]},
+    # 'Astroworld':{"visited": False, "locationType": ["Adventure", "Horror"], "neighbours": [("Babatunde", 10)]},
+    # 'Babatunde':{"visited": False, "locationType": ["Horror"], "neighbours": [("Heaven's Bridge Entrance 1", 10)]},
+    # "Heaven's Bridge Entrance 1":{"visited": False, "locationType": ["Adventure"], "neighbours": [("The After Hours", 20)]},
+    # 'The After Hours':{"visited": False, "locationType": ["Thrill", "Horror"], "neighbours": []},
+    # 'Finding Jesse':{"visited": False, "locationType": ["Kids", "Adventure"], "neighbours": []},
+    # 'Tilted Towers':{"visited": False, "locationType": ["Thrill", "Adventure"], "neighbours": []},
 }
 
 #list of ride types without bathroom and utilities
@@ -209,7 +209,7 @@ def main():
     G = addLocations(G, locationsData)
     G = addConnections(G, locationsData)
     pp = pprint.PrettyPrinter(indent=1)
-    print()
+    print(G)
 
     #empty print functions to space out terminal calls
     
@@ -327,6 +327,13 @@ def main():
             visited.append(current)
 
     print("Thanks for coming to Habib Amusement Park. Here is your path to the gate:", dijkstraforDesired(G, current, 'Gate')[0])     
+    print("Your path: ",visited)
     print("See you next time!")
 
 main()
+
+
+
+
+
+
